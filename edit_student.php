@@ -15,8 +15,35 @@
                                                     $u_mail =  $_POST['u_mail'];
                                                     $u_cell =  $_POST['u_cell'];
                                                     $u_location =  $_POST['u_location'];
+
+                                                    //Photo Update System
+                                                    $old_photo= $_POST['old_photo'];
+
+
+                                                    
+
+                                                    if( !empty( $_FILES['new_photo']['name'] ) ){
+                                                    $new_photo = $_FILES['new_photo']['name'];
+                                                    $new_photot = $_FILES['new_photo']['tmp_name'];
+
+                                                    $picture_extension_array = explode('.',$new_photo); 
+
+                                                    $picture_extension = end($picture_extension_array);  
+                                                    $picture_orginal_extension = strtolower($picture_extension );
+                               
+                                                    $update_image_name = md5( time().rand().$new_photo).".".$picture_orginal_extension;
+
+                                                    move_uploaded_file($new_photot, 'student_photos/'.$update_image_name);
+
+                                                    
+
+                                                    }else{
+
+                                                        $update_image_name = $old_photo;
+
+                                                    }
             
-                                                    $sql ="UPDATE student_info SET status='$status', name='$u_name', email='$u_mail', cell = '$u_cell', location='$u_location' where student_id='$student_id' ";
+                                                    $sql ="UPDATE student_info SET status='$status', name='$u_name', email='$u_mail', cell = '$u_cell', location='$u_location', photo='$update_image_name' where student_id='$student_id' ";
                                                     $connection -> query($sql);
                                                    
             
@@ -90,12 +117,13 @@
                                                 <td>Student Photo</td>
                                                 <td>
                                                 <img class=" img-thumbnail" style=" width:100px; height:100px;" src="student_photos/<?php echo $single_data['photo']; ?>" alt="">
+                                                <input name="old_photo" type="hidden" value="<?php echo $single_data['photo']; ?>">
                                                 </td>
                                                 </tr>
 
                                                 <tr>
                                                 <td>Upload Picture</td>
-                                                <td><input name="u_photo" type="file"></td>
+                                                <td><input name="new_photo" type="file"></td>
                                                 </tr>
 
                                                 <tr>
