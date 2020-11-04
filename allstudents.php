@@ -64,7 +64,7 @@
                                <div class="btn-group">
                                <a class="btn btn-success btn-sm" href="single_student.php?student_id=<?php echo $single_data['student_id'];?>">View</a>
                                 <a class="btn btn-primary btn-sm" href="edit_student.php?student_id=<?php echo $single_data['student_id'];?>">Edit</a>
-                                <a class="btn btn-danger btn-sm" href="#">Delete</a>
+                                <a class="btn btn-danger btn-sm" href="inc/student_delete.php?student_id=<?php echo $single_data['student_id']; ?>&student_picture=<?php echo $single_data['photo'];?>">Delete</a>
                                </div>
                             </td>
                         </tr>

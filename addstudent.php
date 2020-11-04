@@ -135,7 +135,7 @@
 			  </div>
 
 			  <div class="card-footer">
-					<a class=" card-link" href="index.php">Login Now</a>
+					<a class=" btn btn-primary card-link" href="allstudents.php">All Students</a>
 			  </div>
 
 		  </div>
