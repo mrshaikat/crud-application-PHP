@@ -1,0 +1,190 @@
+ //Registraion form
+ 
+ 
+ <?php
+
+            if( isset( $_POST['submit'] ) ){
+                  
+                  // Form data Get
+                   $fname = $_POST[ 'fname' ];
+
+                   //userName Manage 
+                   $uname = $_POST[ 'uname' ];
+                   $userNameCheck = userNameCheck($uname, $connection);
+
+                  //Email Management
+                   $email = $_POST[ 'email' ];
+
+                   $emailCheck = emailCheck($email, $connection);
+
+
+
+                   //Passward Management
+                   $pass = $_POST[ 'pass' ];
+                   $hash_pass = password_hash($pass, PASSWORD_DEFAULT);
+
+
+
+
+                   $cell = $_POST[ 'cell' ];
+
+                   //Profile Picture Get
+                   $propic = $_FILES[ 'propic' ];
+
+                   $picture_name = $propic['name']; 
+                   
+                   $tmp_name = $propic['tmp_name'];
+
+                  
+                   //Picture Management
+                     $picture_extension_array = explode('.',$picture_name); 
+
+                     $picture_extension = end($picture_extension_array);  
+                     $picture_orginal_extension = strtolower($picture_extension );
+
+                     $picture_uniqueName = md5( time().rand()).".".$picture_orginal_extension;
+
+
+                     if( empty($fname) || empty($uname) || empty($email) || empty($pass)){
+
+                        $message = "<p class='alert alert-danger text-center'>Fild Must Not Be Empty!! <button class='close' data-dismiss='alert'>&times;</button> </p>";
+
+                     }elseif(filter_var($email, FILTER_VALIDATE_EMAIL) == false){
+
+                        $message = "<p class='alert alert-danger text-center'>Email Is Not Valid!! <button class='close' data-dismiss='alert'>&times;</button> </p>";
+
+                        
+                     }elseif( $userNameCheck == false ){
+
+                        $message = "<p class='alert alert-danger text-center'>Username Already Exists !! <button class='close' data-dismiss='alert'>&times;</button> </p>";
+
+                     }elseif( $emailCheck == false ){
+                        $message = "<p class='alert alert-danger text-center'>E-mail Already Exists !! <button class='close' data-dismiss='alert'>&times;</button> </p>";
+                     }elseif( in_array( $picture_orginal_extension, ['jpg','png','jpeg','gif']) == false  ){
+
+                        $message = "<p class='alert alert-danger text-center'>Invalid Image formate !! <button class='close' data-dismiss='alert'>&times;</button> </p>";
+
+                     }
+
+                     
+                     else{
+
+                        $sql = "INSERT INTO user_info(fname, uname, email, pass, cell, photo, status) VALUES('$fname', '$uname', '$email', '$hash_pass', '$cell', '$picture_uniqueName','Active') ";
+
+                        $connection -> query($sql);
+
+                        move_uploaded_file($tmp_name, 'photos/'.$picture_uniqueName);
+
+                         $message = "<p class='alert alert-success text-center'>Your Registration Done !! <button class='close' data-dismiss='alert'>&times;</button> </p>";
+
+                     }
+                  
+
+            }
+     
+
+
+
+
+
+            ?>
+
+
+                 <div class="message">
+                       <?php
+
+                        if( isset($message) ){
+
+                              echo $message;
+                        }
+                       
+                       ?>
+                 </div>
+	  <div class="login registratin">
+		  <div class="card">
+			  <div class="card-body">
+				  <h2>Login Now</h2>
+				  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
+
+                          <div class="form-group">
+						  <label for="">Full Name</label>
+						  <input name="fname" class=" form-control" type="text">
+					  </div>
+
+                          <div class="form-group">
+						  <label for="">Username</label>
+						  <input name="uname" class=" form-control" type="text">
+                        </div>
+
+                        <div class="form-group">
+						  <label for="">E-mail</label>
+						  <input name="email" class=" form-control" type="text">
+                        </div>
+                        <div class="form-group">
+						  <label for="">Password</label>
+						  <input name="pass" class=" form-control" type="password">
+					  </div>
+
+                                
+					  <div class="form-group">
+						  <label for="">Cell</label>
+						  <input name="cell" class=" form-control" type="text">
+					  </div>
+
+					  
+                                
+                                <div class="form-group">
+						  <label for="">Profile Picture</label>
+						  <input name="propic" class="" type="file">
+                                </div>
+                                
+
+					  <div class="form-group">
+						 
+						  <input name="submit" class=" btn btn-info btn-block" type="submit" value="Registration">
+                                </div>
+                                
+                                
+				  </form>
+
+			  </div>
+
+			  <div class="card-footer">
+					<a class=" card-link" href="index.php">Login Now</a>
+			  </div>
+
+		  </div>
+	  </div>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
