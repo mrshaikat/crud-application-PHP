@@ -35,6 +35,9 @@
 
                                                     move_uploaded_file($new_photot, 'student_photos/'.$update_image_name);
 
+                                                    //remove old picture
+                                                    unlink('student_photos/'.$old_photo);
+
                                                     
 
                                                     }else{
